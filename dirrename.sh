@@ -3,10 +3,10 @@
 #######################################
 # moves and renames a file in a directory
 # Arguments:
-#   1
-#   2
-#   3
+#   1 - directory name
+#   2 - file name
 #######################################
+# bashsupport disable=BP2001
 function create_directory() {
     local dir_name=$1
     local file_dir=$2
@@ -27,18 +27,20 @@ function move_and_rename_file() {
     local filepath=$1
     local new_name=$2
     local extension=$3
+    # Trim any trailing space from the new_name
+    new_name="${new_name%"${new_name##*[![:space:]]}"}"
     local new_file_name="$new_name$extension"
     local new_file_path="$new_dir_path/$new_file_name"
 
     # Move and rename the file
     if ! mv "$filepath" "$new_file_path"
-    then
-        echo "Error: Could not move and rename the file."
+    then      echo "Error: Could not move and rename the file."
         exit 1
     fi
 
     echo "File moved and renamed: $new_file_path"
 }
+
 
 # Function to extract name and year from filename
 function extract_info() {
